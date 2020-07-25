@@ -1,6 +1,5 @@
 const socket = io();
 const { name, room } = $.deparam(window.location.search);
-console.log(name, room);
 socket.on("connect", () => {
   socket.emit("INFO_FROM_CLIENT_TO_SERVER", {
     name,
