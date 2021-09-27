@@ -13,12 +13,14 @@
     </div>
 
     <div class="chat__main">
-      <ol id="message" class="chat__messages"></ol>
+      <ol id="message" class="chat__messages">
+        <div id="chatting" class="chatting"><span id="name"></span> is typing...</div></ol>
       <div class="chat__footer">
         <form id="message-form">
           <input
             type="text"
             name="message"
+            onkeydown="onKeyDownNotEnter()"
             placeholder="Type something here"
             autofocus
             autocomplete="off"

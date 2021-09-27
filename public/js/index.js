@@ -21,7 +21,6 @@ socket.on('toOtherUser', (message) => {
 
 socket.on('toAllUser', (msg) => {
   const template = $('#message-template').html();
-  console.log(msg);
   const html = Mustache.render(template, {
     from: msg.from,
     createdAt: moment(msg.createdAt).format('LT'),
@@ -97,4 +96,32 @@ $('#send-location').on('click', (e) => {
       createAt: new Date(),
     });
   });
+});
+
+var typing = false;
+var timeout = undefined;
+
+function timeoutFunction() {
+  typing = false;
+  socket.emit('noLongerTypingMessage');
+}
+
+function onKeyDownNotEnter() {
+  if (typing == false) {
+    typing = true;
+    socket.emit('typingMessage', { from: name });
+    timeout = setTimeout(timeoutFunction, 1000);
+  } else {
+    clearTimeout(timeout);
+    timeout = setTimeout(timeoutFunction, 1000);
+  }
+}
+
+socket.on('isMessageTyping', (msg) => {
+  document.getElementById('name').innerHTML = msg.from;
+  document.getElementById('chatting').classList.add('show');
+});
+
+socket.on('isMessageNotTyping', () => {
+  document.getElementById('chatting').classList.remove('show');
 });
